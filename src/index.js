@@ -1,12 +1,31 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
 import * as serviceWorker from './serviceWorker';
+import { Route , BrowserRouter as Router } from 'react-router-dom';
+import loginComponent from './login/login';
+import signupComponent from './signup/signup';
+import dashboardComponent from './dashboard/dashboard';
+const firebaseConfig = require('./keys/firebaseConfig');
+
+const firebase = require("firebase");
+require("firebase/firestore"); // Required for side-effects?????
+firebase.initializeApp(firebaseConfig.default);
+
+const routing =(
+  <Router>
+    <div id='routing-container'>
+      <Route path='/login' component={loginComponent}></Route>
+      <Route path='/signup' component={signupComponent}></Route>
+      <Route path='/dashboard' component={dashboardComponent}></Route>
+    </div>
+  </Router>
+);
+
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    {routing}
   </React.StrictMode>,
   document.getElementById('root')
 );
