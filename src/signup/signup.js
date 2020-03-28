@@ -28,8 +28,7 @@ class singup extends Component {
 
     submitSignup = (e) => {
         e.preventDefault(); // doesn't allowws page to refresh automatically
-        var flag = 0;
-      
+        var flag  = 0;
         if (!this.formIsValid()) {
             this.setState({ signupError: "Password doesn't match" });
             flag = 1;

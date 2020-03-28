@@ -44,6 +44,8 @@ class login extends Component {
             case 'password':
                 this.setState({password : e.target.value});
                 break;
+            
+            default : break;
         }
     }
 

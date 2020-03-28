@@ -80,7 +80,9 @@ class chatList extends Component{
       }
       userIsSender = (chat) => chat.messages[chat.messages.length - 1].sender === this.props.userEmail;
       newChat = () => this.props.newChatBtnFn();
-      selectChat = (index) => this.props.selectChatFn(index);    
+      selectChat = (index) => {
+        this.props.selectChatFn(index)
+      };    
     
 }
 
