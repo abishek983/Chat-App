@@ -6,6 +6,7 @@ import { Route , BrowserRouter as Router } from 'react-router-dom';
 import loginComponent from './login/login';
 import signupComponent from './signup/signup';
 import dashboardComponent from './dashboard/dashboard';
+import landingComponent from './landing/landing';
 const firebaseConfig = require('./keys/firebaseConfig');
 
 const firebase = require("firebase");
@@ -15,6 +16,7 @@ firebase.initializeApp(firebaseConfig.default);
 const routing =(
   <Router>
     <div id='routing-container'>
+      <Route path='/' component={landingComponent} exact></Route>
       <Route path='/login' component={loginComponent}></Route>
       <Route path='/signup' component={signupComponent}></Route>
       <Route path='/dashboard' component={dashboardComponent}></Route>
