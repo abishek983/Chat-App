@@ -4,7 +4,7 @@ import styles from './styles';
 import ChatListComponent from '../chatList/chatList';
 import ChatViewComponent  from '../chatView/chatView';
 import ChatTextBoxComponent from '../chatTextBox/chatTextBox';
-
+import NewChatComponent from '../newChat/newChat';
 
 const firebase = require('firebase');
 
@@ -41,6 +41,34 @@ class dashboard extends Component {
       });
     }
 
+
+    //functions called from newChatfn
+    gotochat = async (dockey ,msg) =>{
+      const usersInChat = dockey.split(':');
+      const chat = this.state.chats.find(_chat => usersInChat.every(_user => _chat.users.includes(_user)));
+      this.setState({ newChatFormVisible : false });
+      await this.selectChat(this.state.chats.indexOf(chat));
+      this.submitMessage(msg); 
+    }
+
+    newChatSubmit = async (chatobj) => {
+      const dockey = this.buildDocKey(chatobj.sendTo); 
+      await firebase 
+        .firestore()
+        .collection('chats')
+        .doc(dockey)
+        .set({
+          recieverHasRead : false,
+          users: [this.state.email, chatobj.sendTo],
+          messages : [{
+            message : chatobj.message,
+            sender : this.state.email
+          }]
+        })
+        this.setState({newChatFormVisible : false});
+        this.selectChat(this.state.chats.length-1);
+    }
+
     selectChat = (chatIndex) =>{
       this.setState({ selectedChat: chatIndex, newChatFormVisible: false });
     }
@@ -72,6 +100,8 @@ class dashboard extends Component {
     
     clickedChatWhereNotSender = (chatIndex) => this.satate.chats[chatIndex]
 
+
+   
     render() {
       const {classes} = this.props;
         return (
@@ -92,6 +122,9 @@ class dashboard extends Component {
                 {
                   this.state.selectedChat !== null && !this.state.newChatFormVisible ? 
                     <ChatTextBoxComponent submitMessagefn ={this.submitMessage} ></ChatTextBoxComponent> : null
+                }
+                {
+                  this.state.newChatFormVisible ? <NewChatComponent goToChatFn={this.gotochat} newChatSubmitFn={this.newChatSubmit}></NewChatComponent>:null
                 }
                 <Button className={classes.signOutBtn} onClick={this.signOut}>Sign Out</Button>
             </div>
